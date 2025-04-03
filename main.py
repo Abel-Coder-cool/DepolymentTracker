@@ -6,38 +6,27 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from glob import glob
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN  #pip3 install scikit-learn
 import cv2
 import time
 # ##gets array of all frames
 def openFiles():
    return sorted(glob(r'frames/*.png'))
 
-VIDEO = r'Small.mp4'
-# ##type eatch color your looking for: typlicaly get the darkest and the lighets pixels on the points for the values
-color1 = [[20,48],[26,60],[47,130],"blue"] #RedRange,GreenRange,BlueRange,Name
-color2 = [[15,80],[121,190],[50,100],"green"]
-color3 = [[180,255],[20,100],[53,110],"pink"]
-color4 = [[200,255],[195,255],[60,100],"yellow"]
-colors = [color1,color2,color3,color4]
-# ##make a parralell array for the inital point values
-PointCordanitesArrColor1 = [[0,699,236]]#type inital vales of eatch point: frame = 0,xstart,ystart
-PointCordanitesArrColor2 = [[0,684,258]]
-PointCordanitesArrColor3 = [[0,1111,272]]
-PointCordanitesArrColor4 = [[0,1109,260]]
-PointCordanitesArr = [PointCordanitesArrColor1,PointCordanitesArrColor2,PointCordanitesArrColor3,PointCordanitesArrColor4]
+VIDEO = r'test1.mp4'
+
 ##type eatch color your looking for: typlicaly get the darkest and the lighets pixels on the points for the values
-## color1 = [[35,48],[60,90],[130,200],"blue"] #RedRange,GreenRange,BlueRange,Name
-## color2 = [[15,80],[121,200],[80,120],"green"]
-## color3 = [[180,255],[20,60],[53,90],"pink"]
-## color4 = [[240,255],[210,255],[132,160],"yellow"]
-## colors = [color1,color2,color3,color4]
-## #make a parralell array for the inital point values
-## PointCordanitesArrColor1 = [[0,167,1014]]#type inital vales of eatch point: frame = 0,xstart,ystart
-## PointCordanitesArrColor2 = [[0,82,1483]]
-## PointCordanitesArrColor3 = [[0,63,1483]]
-## PointCordanitesArrColor4 = [[0,151,1008]]
-## PointCordanitesArr = [PointCordanitesArrColor1,PointCordanitesArrColor2,PointCordanitesArrColor3,PointCordanitesArrColor4]
+color1 = [[35,50],[30,50],[50,120],"blue"] #RedRange,GreenRange,BlueRange,Name
+color2 = [[15,90],[100,200],[50,120],"green"]
+color3 = [[160,255],[20,85],[53,120],"pink"]
+color4 = [[200,255],[200,255],[70,110],"yellow"]
+colors = [color1,color2,color3,color4]
+#make a parralell array for the inital point values
+PointCordanitesArrColor1 = [[0,737,237]]#blue
+PointCordanitesArrColor2 = [[0,732,254]]#green
+PointCordanitesArrColor3 = [[0,1147,295]]#pink
+PointCordanitesArrColor4 = [[0,1146,283]]#yellow
+PointCordanitesArr = [PointCordanitesArrColor1,PointCordanitesArrColor2,PointCordanitesArrColor3,PointCordanitesArrColor4] # control c to quit sqript
 badFrames = []
 gridResolution = []
 frame_files = openFiles()
@@ -45,8 +34,6 @@ for i in range(1,len(frame_files)):
    start_time_frame = time.time()
    #loops for eatch color in frame
    for c in range(len(colors)):
-      
-      
        image1 = cv2.imread(frame_files[i])  # Ensure correct scaling (0-255 uint8)
        image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)  # Convert to RGB from OpenCV's default BGR
       
@@ -87,7 +74,7 @@ for i in range(1,len(frame_files)):
           
            # <-------------------------->
            theresPoint = 0
-           tolorance = 15 #+-
+           tolorance = 25 #+-
            
            for center in dfCenters:
                if ((center[0] >= PointCordanitesArr[c][i-1][1] - tolorance) and (center[0] <= PointCordanitesArr[c][i-1][1] + tolorance)) and \
@@ -98,11 +85,17 @@ for i in range(1,len(frame_files)):
 
            if theresPoint == 0: #error giving
                print(f' no {colors[c][3]} points in interval try chanceing tolorance or color range', frame_files[i])
+            #    plt.imshow(image1)
+            #    for center in dfCenters:
+            #        plt.scatter(center[0], center[1], c='purple', marker='x')  # Cluster    
+            #    plt.show()  
                badFrames.append(i)
                pointColor.append(PointCordanitesArr[c][i-1][1])
                pointColor.append(PointCordanitesArr[c][i-1][2])
            elif theresPoint > 1:
                print(f'more than one {colors[c][3]} point in interval', frame_files[i])
+            #    for center in dfCenters:
+            #        plt.scatter(center[0], center[1], c='purple', marker='x')  # Cluster
                pointColor.extend(dfCenters[0])
                badFrames.append(i)
       
@@ -147,11 +140,11 @@ def get_fps(video_path):
 
 # --- Main Processing ---
 # Get video properties
-image = cv2.imread(r"frames/frame_0119.png")
+image = cv2.imread(r"frames/frame_0000.png")
 height, width = image.shape[:2]
-print(f"Width: {width}, Height: {height}")
-resolution = [height, width]
-fps = get_fps(VIDEO)
+# print(f"Width: {width}, Height: {height}")
+resolution = [1080, 1980]
+fps = 60
 print(f"Video FPS: {fps}")
 
 # Load tracking data
@@ -159,12 +152,13 @@ csv_file_path = r'csvs/dataPixels.csv'
 df = pd.read_csv(csv_file_path)
 
 # Extract points and convert to Cartesian coordinates
-point1 = df.iloc[:, 1:3].to_numpy(dtype=np.float64)  # Blue
-point2 = df.iloc[:, 3:5].to_numpy(dtype=np.float64)  # Green
-point3 = df.iloc[:, 5:7].to_numpy(dtype=np.float64)  # Red
-point4 = df.iloc[:, 7:9].to_numpy(dtype=np.float64)  # Yellow
+point1 = df.iloc[:, 1:3].to_numpy(dtype=np.float64) # blue (rotary hinge)
+point2 = df.iloc[:, 3:5].to_numpy(dtype=np.float64) # green (sensor head)
+point3 = df.iloc[:, 5:7].to_numpy(dtype=np.float64) # red (inside elbow)
+point4 = df.iloc[:, 7:9].to_numpy(dtype=np.float64) # yellow (outside elbow) 
 
 ptarray = [point1, point2, point3, point4]
+
 # convert from screen coordinates to cartesian coordinates
 for point in ptarray:
     point[:,1] = resolution[1] - point[:,1]
@@ -186,15 +180,18 @@ if len(badFrames) !=0:
     point4 = point4[mask]
 
 angles = []
-for frame in range(len(point1)):
-    
-    # ensure that the direction of the vector is consistent for both the outside and the inside
-    outside_line = ptarray[0][frame] - ptarray[1][frame]
-    outside_vector = (outside_line)/np.linalg.norm(outside_line)
-    inside_line = ptarray[3][frame] - ptarray[2][frame]
-    inside_vector = (inside_line)/np.linalg.norm(inside_line)
-    angle = np.degrees(np.arccos(np.dot(outside_vector, inside_vector)))
-    angles.append(angle)
+
+vector1 = point3 - point1  
+vector2 = point2 - point3  
+
+for frame in range(len(vector1)):
+    # Normalize the vectors
+    v1 = vector1[frame] / np.linalg.norm(vector1[frame])
+    v2 = vector2[frame] / np.linalg.norm(vector2[frame])
+
+    # Compute the angle in degrees
+    angle = np.degrees(np.arccos(np.clip(np.dot(v1, v2), -1.0, 1.0)))
+    angles.append(180 - angle)
 
 times = np.arange(len(angles)) / fps
 angular_velocity = np.gradient(angles, times)
@@ -210,4 +207,5 @@ results = pd.DataFrame({
 
 output_path = f"csvs/{VIDEO.replace('.mp4', '')}_Data.csv"
 results.to_csv(output_path, index=False)
+
 print(f"Results saved to {output_path}")

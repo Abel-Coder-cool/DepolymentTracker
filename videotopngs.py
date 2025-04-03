@@ -22,4 +22,4 @@ def extract_frames(video_path, output_folder, frame_name="frame"):
     cap.release()
     print(f"Extracted {frame_count} frames to {output_folder}")
 
-extract_frames(r"Small.mp4", r"frames/")
+extract_frames(r"test1.mp4", r"frames/")
