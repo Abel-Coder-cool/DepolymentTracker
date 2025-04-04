@@ -143,8 +143,8 @@ def get_fps(video_path):
 image = cv2.imread(r"frames/frame_0000.png")
 height, width = image.shape[:2]
 # print(f"Width: {width}, Height: {height}")
-resolution = [1080, 1980]
-fps = 60
+resolution = [height, width]
+fps = get_fps(VIDEO)
 print(f"Video FPS: {fps}")
 
 # Load tracking data
