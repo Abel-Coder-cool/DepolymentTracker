@@ -1,4 +1,3 @@
-
 import cv2
 import os
 
@@ -16,10 +15,10 @@ def extract_frames(video_path, output_folder, frame_name="frame"):
         # Save frame as PNG
         frame_filename = os.path.join(output_folder, f"{frame_name}_{frame_count:04d}.png")
         cv2.imwrite(frame_filename, frame)
-        print(f'\rFrame {frame_count} done ', end='', flush=True)
+        # print(f'\rFrame {frame_count} done ', end='', flush=True)
         frame_count += 1
         
     cap.release()
     print(f"Extracted {frame_count} frames to {output_folder}")
 
-extract_frames(r"test1.mp4", r"frames/")
+# extract_frames(r"test1.mp4", r"frames/")
