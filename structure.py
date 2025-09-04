@@ -262,7 +262,6 @@ def on_point_selected(event):
         g_upper.delete(0, tk.END); g_upper.insert(0, g_range[1])
         b_lower.delete(0, tk.END); b_lower.insert(0, b_range[0])
         b_upper.delete(0, tk.END); b_upper.insert(0, b_range[1])
-
 def apply_edits():
     idx = point_selector.current()
     if idx >= 0:
@@ -272,7 +271,9 @@ def apply_edits():
             b_range = (int(b_lower.get()), int(b_upper.get()))
             x, y, _, _, _ = point_list[idx]
             point_list[idx] = (x, y, r_range, g_range, b_range)
+            current_selection = idx  
             update_current_points()
+            point_selector.current(current_selection)
             printToTerminal(f"Updated point {idx}")
         except ValueError:
             printToTerminal("Invalid range values")
@@ -337,7 +338,7 @@ def startProcces():
            PixelPoints = np.column_stack(np.where(mask > 0))
            # <--- Image data managing ---->
            if PixelPoints.size == 0:
-               printToTerminal(f' no {colors[c][3]} points color range is not good enough\n'+ str(frame_files[i])+"change range and try again",level="error")
+               printToTerminal(f' no {colors[c][3]}\n points color range is not good enough\n'+ str(frame_files[i])+"change range and try again",level="error")
                printToTerminal(f'previous: {PointCordanitesArr[c][i-1][1:]}',level="error")
                load_image(str(frame_files[i]).split("\\")[-1])
                return
@@ -369,14 +370,14 @@ def startProcces():
                             pointColor.extend(center)
                         theresPoint += 1
                if theresPoint == 0: #error giving
-                   printToTerminal(f' no {colors[c][3]} points in interval try chanceing tolorance or color range\n'+ str(frame_files[i])+" change range and try again",level="error")
+                   printToTerminal(f' no {colors[c][3]}\n points in interval try chanceing tolorance or color range\n'+ str(frame_files[i])+" change range and try again",level="error")
                    load_image(str(frame_files[i]).split("\\")[-1])
                    return
                    badFrames.append(i)
                    pointColor.append(PointCordanitesArr[c][i-1][1])
                    pointColor.append(PointCordanitesArr[c][i-1][2])
                elif theresPoint > 1:
-                   printToTerminal(f'more than one {colors[c][3]} point in interval\n'+ str(frame_files[i])+"change range and try again",level="error")
+                   printToTerminal(f'more than one {colors[c][3]}\n point in interval\n'+ str(frame_files[i])+"change range and try again",level="error")
                    load_image(str(frame_files[i]).split("\\")[-1])
                    return
                    pointColor.extend(dfCenters[0])
