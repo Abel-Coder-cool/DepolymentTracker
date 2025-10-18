@@ -1,0 +1,1 @@
+pip install pillow pandas numpy matplotlib scikit-learn opencv-python
