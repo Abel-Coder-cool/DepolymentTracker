@@ -73,6 +73,7 @@ def load_image(IMAGEfile):
 root = tk.Tk()
 root.title("Point Data Getter")
 root.geometry("1400x1000")
+root.state('zoomed')
 root.configure(bg="#d3d3d3")
 
 # Global image objects
@@ -133,7 +134,7 @@ def get_pixel(event):
 # --- UI Layout ---
 #titel
 entry_label = tk.Label(root, text=" Abel Point Tracker ", bg="#6AA7D9", fg="#FFFFFF",font=("Arial", 50))
-entry_label.place(x=20, y= 20)
+entry_label.place(relx=0.014, rely=0.02, relwidth=0.5, relheight=0.05)
 
 # Open the image
 image = Image.open("AbelMoon - Copy.png")
@@ -141,16 +142,16 @@ image = image.resize((120, 150), Image.Resampling.LANCZOS)
 photo = ImageTk.PhotoImage(image)
 imagelabel = tk.Label(root, image=photo)
 imagelabel.image = photo  # Keep a reference!
-imagelabel.place(x=625, y=20, width=120, height=150)
+imagelabel.place(relx=0.446, rely=0.02, relwidth=0.086, relheight=0.15)
 
 # Top Button
 top_button = tk.Button(root, text="pick video", bg="#ffd662", fg="#2b8bd0", font=("Arial", 10), command=load_image_Inital)
-top_button.place(x=20, y= 100+40, width=100, height=30)
+top_button.place(relx=0.014, rely=0.14, relwidth=0.071, relheight=0.03)
 
 # Left Canvas for Image
 # Image display frame
 image_frame = tk.Frame(root, bg="#d3d3d3", bd=1, relief="solid")
-image_frame.place(x=20, y= 100+80, width=720, height=660)
+image_frame.place(relx=0.014, rely=0.18, relwidth=0.514, relheight=0.66)
 
 # Scrollbars
 x_scroll = Scrollbar(image_frame, orient=HORIZONTAL)
@@ -184,57 +185,56 @@ def deletefiles():
     
 # Right Panel
 right_button = tk.Button(root, text="point Data", bg="#007bbf", fg="white", font=("Arial", 10))
-right_button.place(x=880, y= 100+85, width=280, height=40)
+right_button.place(relx=0.63, rely=0.145, relwidth=0.2, relheight=0.04)
 right_button = tk.Button(root, text="Clean Up For New Video", bg="red", fg="black", font=("Arial", 10),command=deletefiles)
-right_button.place(x=880, y= 100, width=280, height=40)
-
+right_button.place(relx=0.63, rely=0.1, relwidth=0.2, relheight=0.04)  # Clean up button
 
 entry_label = tk.Label(root, text="X, Y, Red, Green, Blue", bg="#d3d3d3")
-entry_label.place(x=800, y= 100+150)
+entry_label.place(relx=0.57, rely=0.15)
 
 entry = tk.Entry(root, font=("Arial", 12))
-entry.place(x=800, y= 100+180, width=400, height=30)
+entry.place(relx=0.57, rely=0.18, relwidth=0.286, relheight=0.03)
 
 enter_button = tk.Button(root, text="Enter Point", width=15, command=enter_point)
-enter_button.place(x=950, y= 100+230, width=100, height=30)
+enter_button.place(relx=0.68, rely=0.23, relwidth=0.071, relheight=0.03)
 
 current_points_label = tk.Label(root, text="CurrentPoints", bg="#d3d3d3")
-current_points_label.place(x=800, y= 100+260)
+current_points_label.place(relx=0.57, rely=0.26)
 
 current_points_text = tk.Text(root, height=5, width=30)
-current_points_text.place(x=800, y= 100+290, width=500, height=50)
+current_points_text.place(relx=0.57, rely=0.29, relwidth=0.357, relheight=0.05)
 
 terminal_label = tk.Label(root, text="Terminal", bg="#d3d3d3")
-terminal_label.place(x=800, y= 720)
+terminal_label.place(relx=0.57, rely=0.72)
 
 terminal_text = tk.Text(root, height=10, width=50, font=("Comic Sans MS", 14))
-terminal_text.place(x=800, y= 750, width=500, height=200)
+terminal_text.place(relx=0.57, rely=0.75, relwidth=0.357, relheight=0.2)
 
 # --- Right Panel continued ---
 # Dropdown to pick point
 pick_point_label = tk.Label(root, text="Pick Point:", bg="#d3d3d3", font=("Arial", 12))
-pick_point_label.place(x=800, y=450)
+pick_point_label.place(relx=0.57, rely=0.45)
 
 point_selector = ttk.Combobox(root, state="readonly")
-point_selector.place(x=900, y=450, width=200, height=30)
+point_selector.place(relx=0.643, rely=0.45, relwidth=0.143, relheight=0.03)
 
 # Section Title
 edit_label = tk.Label(root, text="Edit Color ranges", bg="#d3d3d3", font=("Arial", 14, "bold"))
-edit_label.place(x=800, y=500)
+edit_label.place(relx=0.57, rely=0.5)
 
 # Column Labels
 lower_label = tk.Label(root, text="Lower", bg="#d3d3d3", font=("Arial", 12))
 upper_label = tk.Label(root, text="Upper", bg="#d3d3d3", font=("Arial", 12))
-lower_label.place(x=950, y=530)
-upper_label.place(x=1050, y=530)
+lower_label.place(relx=0.68, rely=0.53)
+upper_label.place(relx=0.75, rely=0.53)
 
 # Row Labels + Entry fields
 r_label = tk.Label(root, text="Red", bg="#d3d3d3", font=("Arial", 12))
 g_label = tk.Label(root, text="Green", bg="#d3d3d3", font=("Arial", 12))
 b_label = tk.Label(root, text="Blue", bg="#d3d3d3", font=("Arial", 12))
-r_label.place(x=800, y=560)
-g_label.place(x=800, y=600)
-b_label.place(x=800, y=640)
+r_label.place(relx=0.57, rely=0.56)
+g_label.place(relx=0.57, rely=0.6)
+b_label.place(relx=0.57, rely=0.64)
 
 # Entries for lower and upper ranges
 r_lower = tk.Entry(root, width=5)
@@ -244,12 +244,12 @@ g_upper = tk.Entry(root, width=5)
 b_lower = tk.Entry(root, width=5)
 b_upper = tk.Entry(root, width=5)
 
-r_lower.place(x=950, y=560, width=60)
-r_upper.place(x=1050, y=560, width=60)
-g_lower.place(x=950, y=600, width=60)
-g_upper.place(x=1050, y=600, width=60)
-b_lower.place(x=950, y=640, width=60)
-b_upper.place(x=1050, y=640, width=60)
+r_lower.place(relx=0.68, rely=0.56, relwidth=0.043)
+r_upper.place(relx=0.75, rely=0.56, relwidth=0.043)
+g_lower.place(relx=0.68, rely=0.6, relwidth=0.043)
+g_upper.place(relx=0.75, rely=0.6, relwidth=0.043)
+b_lower.place(relx=0.68, rely=0.64, relwidth=0.043)
+b_upper.place(relx=0.75, rely=0.64, relwidth=0.043)
 
 def on_point_selected(event):
     idx = point_selector.current()
@@ -279,7 +279,7 @@ def apply_edits():
             printToTerminal("Invalid range values")
 
 apply_button = tk.Button(root, text="Apply Changes", command=apply_edits)
-apply_button.place(x=950, y=680, width=120, height=30)
+apply_button.place(relx=0.68, rely=0.68, relwidth=0.086, relheight=0.03)
 
 point_selector.bind("<<ComboboxSelected>>", on_point_selected)
 
@@ -408,5 +408,5 @@ def startProcces():
     printToTerminal(f"Pixel Locations saved to csvs/dataPixels.csv",level="succes")
 
 procces_button = tk.Button(root, text="startTracking", width=15, command=startProcces,bg="#0018cf",fg="white")
-procces_button.place(x=950, y= 710, width=100, height=30)
+procces_button.place(relx=0.68, rely=0.71, relwidth=0.071, relheight=0.03)
 root.mainloop()
