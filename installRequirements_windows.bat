@@ -1,1 +1,1 @@
-pip install pillow pandas numpy matplotlib scikit-learn opencv-python
+pip3 install pillow pandas numpy matplotlib scikit-learn opencv-python
